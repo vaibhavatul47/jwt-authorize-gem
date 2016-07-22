@@ -1,0 +1,13 @@
+AllCops:
+  Exclude:
+    - "*.gemspec"
+    - "Rakefile"
+
+Documentation:
+  Enabled: false
+
+LineLength:
+  Max: 120
+
+StringLiterals:
+  EnforcedStyle: double_quotes

@@ -27,7 +27,7 @@ def authorized?
 end
 
 def public_key
-  ENV["YOUR_PUBLIC_KEY"]
+  OpenSSL::PKey::RSA.new ENV["YOUR_PUBLIC_KEY"]
 end
 ```
 

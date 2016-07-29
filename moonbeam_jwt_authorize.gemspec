@@ -1,16 +1,15 @@
 # coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "moonbeam_jwt_authorize/version"
+require "jwt_authorize/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "moonbeam_jwt_authorize"
-  spec.version       = MoonbeamJwtAuthorize::VERSION
+  spec.name          = "jwt_authorize"
+  spec.version       = JwtAuthorize::VERSION
   spec.authors       = ["Dave Persing"]
   spec.email         = ["persing@adobe.com"]
 
-  spec.summary       = "Provides a common library for Moonbeam JWT authorization
-                          to be used by Smoothie, Moonbeam, and Conduit."
+  spec.summary       = "Provides a common library for Moonbeam JWT authorization"
   spec.homepage      = "https://github.com/adobe-platform/moonbeam-jwt-authorize"
 
   # Prevent pushing this gem to RubyGems.org.

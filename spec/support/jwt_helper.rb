@@ -1,6 +1,6 @@
 require "jwt"
 
-module JwtHelpers
+module JwtHelper
   def generate_jwt(payload)
     JWT.encode(payload, private_key, "RS256")
   end
@@ -16,8 +16,4 @@ module JwtHelpers
   def key
     @key ||= OpenSSL::PKey::RSA.generate 2048
   end
-end
-
-RSpec.configure do |c|
-  c.include JwtHelpers
 end

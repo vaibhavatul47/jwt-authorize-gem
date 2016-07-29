@@ -1,18 +1,18 @@
-# MoonbeamJwtAuthorize
+# JwtAuthorize
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/moonbeam_jwt_authorize`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem provides a common library for JWT authorization in Moonbeam.
 
 This gem relies on a `REQUIRED_DEPLOY_PERMISSIONS` environment variable being set.
 
 Where `REQUIRED_DEPLOY_PERMISSIONS` is a comma-separated list of Airlock permissions.  E.g.:
-`"pipeline.deploy,pipeline.admin"`
+`export REQUIRED_DEPLOY_PERMISSIONS="pipeline.deploy,pipeline.admin"`
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "moonbeam_jwt_authorize", git: 'git://github.com/adobe-platform/moonbeam-jwt-authorize.git'
+gem "jwt_authorize", git: 'git@github.com:adobe-platform/jwt-authorize-gem.git'
 ```
 
 And then execute:
@@ -21,7 +21,15 @@ And then execute:
 
 ## Usage
 
+```ruby
+def authorized?
+  JwtAuthorize.authorized?(public_key, "bearer yourjwthere", "org/repo")
+end
 
+def public_key
+  ENV["YOUR_PUBLIC_KEY"]
+end
+```
 
 ## Development
 
@@ -31,5 +39,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/adobe-platform/moonbeam_jwt_authorize.
+Bug reports and pull requests are welcome on GitHub at https://github.com/adobe-platform/jwt-authorize-gem.
 

@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dave Persing"]
   spec.email         = ["persing@adobe.com"]
 
-  spec.summary       = "Provides a common library for Moonbeam JWT authorization"
-  spec.homepage      = "https://github.com/adobe-platform/moonbeam-jwt-authorize"
+  spec.summary       = "Provides a common library for Moonbeam service JWT authorization"
+  spec.homepage      = "https://github.com/adobe-platform/jwt-authorize-gem"
 
   # Prevent pushing this gem to RubyGems.org.
   # To allow pushes either set the 'allowed_push_host' to allow pushing to a single host

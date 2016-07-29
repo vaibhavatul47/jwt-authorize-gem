@@ -31,6 +31,11 @@ def public_key
 end
 ```
 
+## Test
+`make test` or `./ci-test.sh`
+
+During tests, the `JwtHelper` will create a new key pair and pass into the `JwtDecoder` class.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

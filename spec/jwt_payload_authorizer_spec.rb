@@ -70,6 +70,7 @@ describe JwtAuthorize::JwtPayloadAuthorizer do
 
     let(:authorizer) { JwtAuthorize::JwtPayloadAuthorizer.new }
     let(:base_repo) { "org/repo" }
+    let(:upper_case_base_repo) { "ORg/rEpo" }
 
     it "fails if no repositories exist in payload" do
       expect { authorizer.authorized?(no_repos_payload, base_repo) }
@@ -83,6 +84,10 @@ describe JwtAuthorize::JwtPayloadAuthorizer do
 
     it "fails if repositories do not match payload repos" do
       expect { authorizer.authorized?(repo_mismatch_payload, base_repo) }.to raise_error("Repositories do not match.")
+    end
+
+    it "succeeds if repo letter cases mismatch" do
+      expect(authorizer.authorized?(valid_payload, upper_case_base_repo)).to eq(true)
     end
 
     it "succeeds if repos are the same and user has permissions" do

@@ -20,10 +20,10 @@ module JwtAuthorize
 
     def same_repositories?(payload_repos, base_repo)
       # same = payload_repos.map { |repo| repo["name"] }.include?(base_repo)
-      test_repos = payload_repos.map { |repo| repo["name"] }
+      test_repos = payload_repos.map { |repo| repo["name"].downcase }
       fail "No payload repositories." if test_repos.size == 0
 
-      same = test_repos.include?(base_repo)
+      same = test_repos.include?(base_repo.downcase)
       fail "Repositories do not match." unless same
 
       same

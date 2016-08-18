@@ -68,7 +68,8 @@ describe JwtAuthorize::JwtPayloadAuthorizer do
       }
     end
 
-    let(:authorizer) { JwtAuthorize::JwtPayloadAuthorizer.new }
+    let(:permissions) { "pipeline.admin,pipeline.deploy" }
+    let(:authorizer) { JwtAuthorize::JwtPayloadAuthorizer.new(permissions) }
     let(:base_repo) { "org/repo" }
     let(:upper_case_base_repo) { "ORg/rEpo" }
 

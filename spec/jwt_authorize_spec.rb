@@ -39,13 +39,16 @@ describe JwtAuthorize do
     end
 
     let(:base_repo) { "org/repo" }
+    let(:permissions) { "pipeline.admin,pipeline.deploy" }
 
     it "returns true if JWT is valid." do
-      expect(JwtAuthorize.authorized?(public_key, "bearer #{generate_jwt(valid_payload)}", base_repo)).to eq(true)
+      expect(JwtAuthorize.authorized?(public_key, permissions, "bearer #{generate_jwt(valid_payload)}", base_repo))
+        .to eq(true)
     end
 
     it "returns false if JWT is invalid" do
-      expect(JwtAuthorize.authorized?(public_key, "bearer #{generate_jwt(expired_payload)}", base_repo)).to eq(false)
+      expect(JwtAuthorize.authorized?(public_key, permissions, "bearer #{generate_jwt(expired_payload)}", base_repo))
+        .to eq(false)
     end
   end
 end

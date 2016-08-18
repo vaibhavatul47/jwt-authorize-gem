@@ -10,6 +10,12 @@
 
 module JwtAuthorize
   class JwtPayloadAuthorizer
+    def initialize(permissions)
+      fail "Permissions are empty!" unless permissions
+
+      @perms = permissions.split(",")
+    end
+
     def authorized?(payload, base_repo)
       repos = payload["repositories"]
 
@@ -30,10 +36,9 @@ module JwtAuthorize
     end
 
     def permissions_valid?(payload_repos)
-      needed_perms = permissions
       repo_perms = payload_repos.map { |repo| repo["permissions"] }.flatten
 
-      valid = (needed_perms & repo_perms).size > 0
+      valid = (permissions & repo_perms).size > 0
 
       fail "Invalid permissions." unless valid
 
@@ -41,10 +46,7 @@ module JwtAuthorize
     end
 
     def permissions
-      perms = ENV.fetch("REQUIRED_DEPLOY_PERMISSIONS", "").downcase
-      fail "REQUIRED_DEPLOY_PERMISSIONS is undefined" if perms.empty?
-
-      perms.split(",")
+      @perms
     end
   end
 end

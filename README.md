@@ -2,11 +2,6 @@
 
 This gem provides a common library for JWT authorization in Moonbeam.
 
-This gem relies on a `REQUIRED_DEPLOY_PERMISSIONS` environment variable being set.
-
-Where `REQUIRED_DEPLOY_PERMISSIONS` is a comma-separated list of Airlock permissions.  E.g.:
-`export REQUIRED_DEPLOY_PERMISSIONS="pipeline.deploy,pipeline.admin"`
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -23,11 +18,15 @@ And then execute:
 
 ```ruby
 def authorized?
-  JwtAuthorize.authorized?(public_key, "bearer yourjwthere", "org/repo")
+  JwtAuthorize.authorized?(public_key, permissions, "bearer yourjwthere", "org/repo")
 end
 
 def public_key
   OpenSSL::PKey::RSA.new ENV["YOUR_PUBLIC_KEY"]
+end
+
+def permissions
+  ["pipeline.deploy", "pipeline.admin"]
 end
 ```
 

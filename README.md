@@ -7,7 +7,7 @@ This gem provides a common library for JWT authorization against a list of custo
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "jwt_authorize", git: 'git@github.com:adobe-platform/jwt-authorize-gem.git'
+gem "jwt_authorize", "~> 0.1.1"
 ```
 
 And then execute:

@@ -1,6 +1,6 @@
 # JwtAuthorize
 
-This gem provides a common library for JWT authorization in Moonbeam.
+This gem provides a common library for JWT authorization against a list of custom permissions.
 
 ## Installation
 
@@ -26,7 +26,7 @@ def public_key
 end
 
 def permissions
-  ["pipeline.deploy", "pipeline.admin"]
+  "deploy,admin"
 end
 ```
 

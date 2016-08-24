@@ -2,7 +2,8 @@ require "spec_helper"
 
 describe JwtAuthorize::JwtDecoder do
   describe ".get_payload_from_jwt" do
-    let(:jwt_decoder) { JwtAuthorize::JwtDecoder.new(public_key) }
+    let(:jwt_decoder) { JwtAuthorize::JwtDecoder.new }
+    let(:cert) { certificate }
 
     let(:valid_payload) do
       {
@@ -55,28 +56,28 @@ describe JwtAuthorize::JwtDecoder do
     end
 
     it "fail if JWT is nil" do
-      expect { jwt_decoder.get_payload_from_jwt(nil) }
+      expect { jwt_decoder.get_payload_from_jwt(nil, cert) }
         .to raise_error("Header is nil!")
     end
 
     it "fail if header is not formatted as 'bearer jwttoken'" do
-      expect { jwt_decoder.get_payload_from_jwt("somethingsomethingsomething") }
+      expect { jwt_decoder.get_payload_from_jwt("somethingsomethingsomething", cert) }
         .to raise_error("Incorrectly formatted token")
     end
 
     it "fail if wrong public key is used" do
-      expect { jwt_decoder.get_payload_from_jwt(invalid_jwt) }
+      expect { jwt_decoder.get_payload_from_jwt(invalid_jwt, cert) }
         .to raise_error("Payload could not be decoded from token.")
     end
 
     it "fail if JWT is expired" do
-      expect { jwt_decoder.get_payload_from_jwt("bearer #{generate_jwt(expired_payload)}") }
+      expect { jwt_decoder.get_payload_from_jwt("bearer #{generate_jwt(expired_payload)}", cert) }
         .to raise_error("Payload could not be decoded from token.")
     end
 
     it "returns a payload" do
       payload = valid_payload # Get payload here because re-get will get new timestamp.
-      expect(jwt_decoder.get_payload_from_jwt("bearer #{generate_jwt(payload)}"))
+      expect(jwt_decoder.get_payload_from_jwt("bearer #{generate_jwt(payload)}", cert))
         .to eq(payload)
     end
   end

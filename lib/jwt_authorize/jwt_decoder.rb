@@ -12,16 +12,19 @@ require "jwt"
 
 module JwtAuthorize
   class JwtDecoder
-    def initialize(public_key = nil)
-      @public_key = public_key
-    end
+    def get_payload_from_jwt(header, certificate)
+      fail "No certificate specified" unless certificate
 
-    def get_payload_from_jwt(header)
       validate_header(header)
 
       token = token_from_header(header)
 
-      decode_token(token).first
+      decoded = decode_token(token, certificate)
+
+      options = decoded.last
+      validate_thumbprint(options["x5t"], certificate)
+
+      decoded.first
     end
 
     private
@@ -38,10 +41,19 @@ module JwtAuthorize
       token
     end
 
-    def decode_token(token)
-      JWT.decode(token, @public_key, true, algorithm: "RS256")
+    def validate_thumbprint(header_thumbprint, certificate)
+      cert_thumb = calculate_thumbprint(certificate)
+      fail "Thumbprints do not match" unless header_thumbprint == cert_thumb
+    end
+
+    def decode_token(token, certificate)
+      JWT.decode(token, certificate.public_key, true, algorithm: "RS256")
     rescue JWT::ExpiredSignature, JWT::VerificationError
       raise "Payload could not be decoded from token."
+    end
+
+    def calculate_thumbprint(certificate)
+      OpenSSL::Digest::SHA1.hexdigest(certificate.to_der).scan(/../).join(":")
     end
   end
 end

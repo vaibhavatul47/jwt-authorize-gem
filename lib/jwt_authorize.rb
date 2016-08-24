@@ -24,10 +24,10 @@ module JwtAuthorize
     end
   end
 
-  def self.authorized?(public_key, permissions, auth_token, base_repo)
-    fail "No public key" if public_key.nil?
+  def self.authorized?(certificate, permissions, auth_token, base_repo)
+    fail "No public key" if certificate.nil?
 
-    payload = JwtAuthorize::JwtDecoder.new(public_key).get_payload_from_jwt(auth_token)
+    payload = JwtAuthorize::JwtDecoder.new.get_payload_from_jwt(auth_token, certificate)
 
     JwtAuthorize::JwtPayloadAuthorizer.new(permissions).authorized?(payload, base_repo)
   rescue => err

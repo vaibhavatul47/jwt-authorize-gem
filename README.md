@@ -7,7 +7,7 @@ This gem provides a common library for JWT authorization against a list of custo
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "jwt_authorize", "~> 0.1.1"
+gem "jwt_authorize", "~> 0.1.2"
 ```
 
 And then execute:

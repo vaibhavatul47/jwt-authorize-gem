@@ -24,6 +24,10 @@ module JwtAuthorize
     end
   end
 
+  def self.get_jwt_headers(auth_token)
+    JwtAuthorize::JwtDecoder.new.get_headers_from_jwt(auth_token)
+  end
+
   def self.decode(auth_token, certificate)
     fail "No public key" if certificate.nil?
 

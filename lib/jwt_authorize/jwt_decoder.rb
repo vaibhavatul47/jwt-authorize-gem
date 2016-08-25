@@ -24,7 +24,15 @@ module JwtAuthorize
       options = decoded.last
       validate_thumbprint(options["x5t"], certificate)
 
-      decoded.first
+      decoded
+    end
+
+    def get_headers_from_jwt(token)
+      fail "token is nil" if token.nil?
+
+      headers = token_from_header(token).split(".").first
+
+      JSON.parse(Base64.decode64(headers))
     end
 
     private

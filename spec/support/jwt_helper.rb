@@ -2,11 +2,7 @@ require "jwt"
 
 module JwtHelper
   def generate_jwt(payload)
-    options = {
-      x5u: "http://www.example.com/certs/mycert.cer",
-      x5t: thumbprint
-    }
-    JWT.encode(payload, private_key, "RS256", options)
+    JWT.encode(payload, private_key, "RS256", header_options)
   end
 
   def private_key
@@ -48,6 +44,13 @@ module JwtHelper
     cert.version = 2
 
     cert
+  end
+
+  def header_options
+    {
+      x5u: "https://s3.amazonaws.com/be-secure-dev/dev.cer",
+      x5t: thumbprint
+    }
   end
 
   def thumbprint

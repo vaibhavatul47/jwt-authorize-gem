@@ -41,6 +41,15 @@ describe JwtAuthorize::JwtDecoder do
       }
     end
 
+    let(:headers) do
+      {
+        "typ" => "JWT",
+        "alg" => "RS256",
+        "x5u" => "https://s3.amazonaws.com/be-secure-dev/dev.cer",
+        "x5t" => thumbprint
+      }
+    end
+
     let(:invalid_jwt) do
       "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9
       .eyJ1c2VyIjp7InVzZXJfaWQiOjY1OTIxOTYsInVzZXJuYW1lIjoiZGF2ZX
@@ -76,9 +85,15 @@ describe JwtAuthorize::JwtDecoder do
     end
 
     it "returns a payload" do
-      payload = valid_payload # Get payload here because re-get will get new timestamp.
-      expect(jwt_decoder.get_payload_from_jwt("bearer #{generate_jwt(payload)}", cert))
-        .to eq(payload)
+      # Get payload here because re-get will get new timestamp.
+      payload = valid_payload
+      result = jwt_decoder.get_payload_from_jwt("bearer #{generate_jwt(payload)}", cert)
+      expect(result).to eq([payload, headers])
+    end
+
+    it "decodes a header" do
+      header = jwt_decoder.get_headers_from_jwt("bearer #{generate_jwt(valid_payload)}")
+      expect(header).to eq(headers)
     end
   end
 end

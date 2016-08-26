@@ -41,7 +41,7 @@ module JwtAuthorize
       valid = (permissions & repo_perms).size > 0
 
       unless valid
-        @logger.error("Invalid permissions.  Jwt: #{permissions}, required: #{repo_perms}") unless @logger.nil?
+        @logger.error("Invalid perms. Jwt: #{permissions.inspect}, repo: #{repo_perms.inspect}") unless @logger.nil?
         fail "Invalid permissions."
       end
 

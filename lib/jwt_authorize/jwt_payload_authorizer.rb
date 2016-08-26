@@ -10,10 +10,11 @@
 
 module JwtAuthorize
   class JwtPayloadAuthorizer
-    def initialize(permissions)
+    def initialize(permissions, logger = nil)
       fail "Permissions are empty!" unless permissions
 
       @perms = permissions.split(",")
+      @logger = logger
     end
 
     def authorized?(payload, base_repo)

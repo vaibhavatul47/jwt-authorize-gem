@@ -12,6 +12,10 @@ require "jwt"
 
 module JwtAuthorize
   class JwtDecoder
+    def initialize(logger = nil)
+      @logger = logger
+    end
+
     def get_payload_from_jwt(header, certificate)
       fail "No certificate specified" unless certificate
 
@@ -56,7 +60,8 @@ module JwtAuthorize
 
     def decode_token(token, certificate)
       JWT.decode(token, certificate.public_key, true, algorithm: "RS256")
-    rescue JWT::ExpiredSignature, JWT::VerificationError
+    rescue JWT::ExpiredSignature, JWT::VerificationError => err
+      @logger.error("Payload could not be decoded: #{err}") unless @logger.nil?
       raise "Payload could not be decoded from token."
     end
 

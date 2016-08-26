@@ -55,7 +55,7 @@ module JwtAuthorize
 
     def validate_thumbprint(head_thumb, certificate)
       cert_thumb = calculate_thumbprint(certificate)
-      fail "Thumbprints not equal. Header: #{head_thumb}, cert: #{cert_thumb}" unless head_thumb == cert_thumb
+      fail "Cert SHA1 mismatch. head: #{head_thumb}, cert: #{cert_thumb}" unless head_thumb.casecmp(cert_thumb)
     end
 
     def decode_token(token, certificate)

@@ -37,16 +37,16 @@ module JwtAuthorize
     nil
   end
 
-  def self.authorized?(payload, permissions, base_repo)
+  def self.authorized_request?(payload, permissions, base_repo)
     JwtAuthorize::JwtPayloadAuthorizer.new(permissions, logger).authorized?(payload, base_repo)
   rescue => err
     logger.error("Error processing JWT token: #{err}")
     false
   end
 
-  def self.decode_and_authorized?(certificate, auth_token, permissions, base_repo)
+  def self.authorized?(certificate, auth_token, permissions, base_repo)
     decoded = decode(auth_token, certificate)
 
-    decoded.nil? ? false : authorized?(decoded.first, permissions, base_repo)
+    decoded.nil? ? false : authorized_request?(decoded.first, permissions, base_repo)
   end
 end

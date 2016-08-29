@@ -43,7 +43,7 @@ describe JwtAuthorize do
 
     it "returns true if JWT is valid." do
       expect(
-        JwtAuthorize.decode_and_authorized?(
+        JwtAuthorize.authorized?(
           certificate,
           "bearer #{generate_jwt(valid_payload)}",
           permissions,
@@ -53,7 +53,7 @@ describe JwtAuthorize do
 
     it "returns false if JWT is invalid" do
       expect(
-        JwtAuthorize.decode_and_authorized?(
+        JwtAuthorize.authorized?(
           certificate,
           "bearer #{generate_jwt(expired_payload)}",
           permissions,

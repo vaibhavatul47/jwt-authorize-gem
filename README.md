@@ -7,7 +7,7 @@ This gem provides a common library for JWT authorization against a list of custo
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "jwt_authorize", "~> 0.1.2"
+gem "jwt_authorize", "~> 0.2.0"
 ```
 
 And then execute:
@@ -16,13 +16,15 @@ And then execute:
 
 ## Usage
 
+JwtAuthorize depends on providing an X.509 Certificate to the `authorized?` method.
+
 ```ruby
 def authorized?
-  JwtAuthorize.authorized?(public_key, permissions, "bearer yourjwthere", "org/repo")
+  JwtAuthorize.authorized?(public_key, "bearer yourjwthere", permissions, "org/repo")
 end
 
 def public_key
-  OpenSSL::PKey::RSA.new ENV["YOUR_PUBLIC_KEY"]
+  OpenSSL::X509::Certificate.new ENV["YOUR_X509_CERTIFICATE"]
 end
 
 def permissions

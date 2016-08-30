@@ -10,10 +10,11 @@
 
 module JwtAuthorize
   class JwtPayloadAuthorizer
-    def initialize(permissions)
+    def initialize(permissions, logger = nil)
       fail "Permissions are empty!" unless permissions
 
       @perms = permissions.split(",")
+      @logger = logger
     end
 
     def authorized?(payload, base_repo)
@@ -25,7 +26,6 @@ module JwtAuthorize
     private
 
     def same_repositories?(payload_repos, base_repo)
-      # same = payload_repos.map { |repo| repo["name"] }.include?(base_repo)
       test_repos = payload_repos.map { |repo| repo["name"].downcase }
       fail "No payload repositories." if test_repos.size == 0
 
@@ -40,7 +40,10 @@ module JwtAuthorize
 
       valid = (permissions & repo_perms).size > 0
 
-      fail "Invalid permissions." unless valid
+      unless valid
+        @logger.error("Invalid perms. Jwt: #{permissions.inspect}, repo: #{repo_perms.inspect}") unless @logger.nil?
+        fail "Invalid permissions."
+      end
 
       valid
     end

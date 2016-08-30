@@ -12,16 +12,31 @@ require "jwt"
 
 module JwtAuthorize
   class JwtDecoder
-    def initialize(public_key = nil)
-      @public_key = public_key
+    def initialize(logger = nil)
+      @logger = logger
     end
 
-    def get_payload_from_jwt(header)
+    def get_payload_from_jwt(header, certificate)
+      fail "No certificate specified" unless certificate
+
       validate_header(header)
 
       token = token_from_header(header)
 
-      decode_token(token).first
+      decoded = decode_token(token, certificate)
+
+      options = decoded.last
+      validate_thumbprint(options["x5t"], certificate)
+
+      decoded
+    end
+
+    def get_headers_from_jwt(token)
+      fail "token is nil" if token.nil?
+
+      headers = token_from_header(token).split(".").first
+
+      JSON.parse(Base64.decode64(headers))
     end
 
     private
@@ -38,10 +53,20 @@ module JwtAuthorize
       token
     end
 
-    def decode_token(token)
-      JWT.decode(token, @public_key, true, algorithm: "RS256")
-    rescue JWT::ExpiredSignature, JWT::VerificationError
+    def validate_thumbprint(head_thumb, certificate)
+      cert_thumb = calculate_thumbprint(certificate)
+      fail "Cert SHA1 mismatch. head: #{head_thumb}, cert: #{cert_thumb}" unless head_thumb.casecmp(cert_thumb)
+    end
+
+    def decode_token(token, certificate)
+      JWT.decode(token, certificate.public_key, true, algorithm: "RS256")
+    rescue JWT::ExpiredSignature, JWT::VerificationError => err
+      @logger.error("Payload could not be decoded: #{err}") unless @logger.nil?
       raise "Payload could not be decoded from token."
+    end
+
+    def calculate_thumbprint(certificate)
+      OpenSSL::Digest::SHA1.hexdigest(certificate.to_der).scan(/../).join(":")
     end
   end
 end

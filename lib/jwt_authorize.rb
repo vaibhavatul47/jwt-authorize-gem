@@ -11,7 +11,6 @@
 require "jwt_authorize/version"
 require "jwt_authorize/jwt_decoder"
 require "jwt_authorize/jwt_payload_authorizer"
-require "jwt_authorize/jwt_consts"
 require "logger"
 
 module JwtAuthorize

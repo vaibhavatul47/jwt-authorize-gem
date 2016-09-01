@@ -9,6 +9,7 @@
 #  governing permissions and limitations under the License.
 
 require "jwt"
+require "jwt_authorize/jwt_consts"
 
 module JwtAuthorize
   class JwtDecoder
@@ -26,7 +27,7 @@ module JwtAuthorize
       decoded = decode_token(token, certificate)
 
       options = decoded.last
-      validate_thumbprint(options["x5t"], certificate)
+      validate_thumbprint(options[CERTIFICATE_THUMBPRINT], certificate)
 
       decoded
     end

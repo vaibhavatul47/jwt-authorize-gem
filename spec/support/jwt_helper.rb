@@ -21,6 +21,10 @@ module JwtHelper
     @certificate ||= generate_cert
   end
 
+  def key_path
+    "https://www.example.com/dev.cer"
+  end
+
   def generate_cert
     cert = new_cert(key)
     cert = cert.sign key, OpenSSL::Digest::SHA256.new
@@ -48,7 +52,7 @@ module JwtHelper
 
   def header_options
     {
-      x5u: "https://s3.amazonaws.com/be-secure-dev/dev.cer",
+      x5u: key_path,
       x5t: thumbprint
     }
   end

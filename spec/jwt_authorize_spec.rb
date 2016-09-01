@@ -60,5 +60,25 @@ describe JwtAuthorize do
           base_repo))
         .to eq(false)
     end
+
+    it "returns the cert thumbprint" do
+      expect(
+        JwtAuthorize.get_certificate_thumbprint("bearer #{generate_jwt(valid_payload)}"))
+        .to eq(thumbprint)
+    end
+
+    it "returns the cert path" do
+      expect(
+        JwtAuthorize.get_certificate_path("bearer #{generate_jwt(valid_payload)}"))
+        .to eq(key_path)
+    end
+
+    it "returns the thumbprint key" do
+      expect(JwtAuthorize::CERTIFICATE_THUMBPRINT).to eq("x5t")
+    end
+
+    it "returns the cert path key" do
+      expect(JwtAuthorize::CERTIFICATE_PATH).to eq("x5u")
+    end
   end
 end

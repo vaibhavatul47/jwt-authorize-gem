@@ -45,7 +45,7 @@ describe JwtAuthorize::JwtDecoder do
       {
         "typ" => "JWT",
         "alg" => "RS256",
-        "x5u" => "https://s3.amazonaws.com/be-secure-dev/dev.cer",
+        "x5u" => "https://www.example.com/dev.cer",
         "x5t" => thumbprint
       }
     end

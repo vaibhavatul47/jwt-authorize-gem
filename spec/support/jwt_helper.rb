@@ -22,7 +22,7 @@ module JwtHelper
   end
 
   def key_path
-    "https://s3.amazonaws.com/be-secure-dev/dev.cer"
+    "https://www.example.com/dev.cer"
   end
 
   def generate_cert

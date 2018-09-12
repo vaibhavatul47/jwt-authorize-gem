@@ -13,8 +13,9 @@ require "jwt_authorize/jwt_consts"
 
 module JwtAuthorize
   class JwtDecoder
-    def initialize(logger = nil)
+    def initialize(logger = nil, options = {})
       @logger = logger
+      @options = options
     end
 
     def get_payload_from_jwt(header, certificate)
@@ -60,7 +61,8 @@ module JwtAuthorize
     end
 
     def decode_token(token, certificate)
-      JWT.decode(token, certificate.public_key, true, algorithm: "RS256")
+      @options.update(algorithm: "RS256")
+      JWT.decode(token, certificate.public_key, true, @options)
     rescue JWT::ExpiredSignature, JWT::VerificationError => err
       @logger.error("Payload could not be decoded: #{err}") unless @logger.nil?
       raise "Payload could not be decoded from token."

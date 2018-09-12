@@ -33,10 +33,10 @@ module JwtAuthorize
       JwtAuthorize::JwtDecoder.new.get_headers_from_jwt(auth_token)
     end
 
-    def decode(auth_token, certificate)
+    def decode(auth_token, certificate, options = {})
       fail "No public key" if certificate.nil?
 
-      JwtAuthorize::JwtDecoder.new(logger).get_payload_from_jwt(auth_token, certificate)
+      JwtAuthorize::JwtDecoder.new(logger, options).get_payload_from_jwt(auth_token, certificate)
     rescue => err
       logger.error("Error decoding JWT token: #{err}")
       nil
@@ -49,8 +49,8 @@ module JwtAuthorize
       false
     end
 
-    def authorized?(certificate, auth_token, permissions, base_repo)
-      decoded = decode(auth_token, certificate)
+    def authorized?(certificate, auth_token, permissions, base_repo, options = {})
+      decoded = decode(auth_token, certificate, options)
 
       decoded.nil? ? false : authorized_request?(decoded.first, permissions, base_repo)
     end

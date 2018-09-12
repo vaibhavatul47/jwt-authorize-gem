@@ -61,7 +61,7 @@ module JwtAuthorize
     end
 
     def decode_token(token, certificate)
-      @options.update(algorithm: "RS256")
+      @options[:algorithm] = "RS256"
       JWT.decode(token, certificate.public_key, true, @options)
     rescue JWT::ExpiredSignature, JWT::VerificationError => err
       @logger.error("Payload could not be decoded: #{err}") unless @logger.nil?
